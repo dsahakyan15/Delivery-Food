@@ -19,6 +19,10 @@ const cardsMenu = document.querySelector('.cards-menu')
 
 let login = localStorage.getItem('Delivery')
 
+function validName(str) {
+  const regName = /^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$/;
+  return regName.test(str);
+}
 function toggleModal() {
   modal.classList.toggle("is-open");
 }
@@ -55,7 +59,7 @@ function autorized() {
 function notAutorized() {
   function logIn(event) {
     event.preventDefault();
-    if (loginInput.value.trim()) {
+    if (validName(loginInput.value)) {
       login = loginInput.value;
       localStorage.setItem('Delivery', login)
       toggleModalAuth();
@@ -148,26 +152,21 @@ function openGoods(event) {
   const target = event.target;
 
   if (login) {
-    const restaurant = target.closest('card-restaurant');
+    const restaurant = target.closest('.card-restaurant');
     if (restaurant) {
       cardsMenu.textContent = '';
       containerPromo.classList.add('hide');
       restaurants.classList.add('hide');
       menu.classList.remove('hide');
 
-
       createCardGood();
       createCardGood();
       createCardGood();
-    }
-    else {
-      toggleModalAuth()
     }
   }
-
-
-
-
+  else {
+    toggleModalAuth()
+  }
 }
 
 cartButton.addEventListener("click", toggleModal);
@@ -184,3 +183,17 @@ logo.addEventListener('click', () => {
 checkAuth()
 
 createCardsRestaurants();
+
+// Slider
+
+new Swiper('.swiper-container',{
+  sliderPerView: 1,
+  loop:true,
+  autoplay:true,
+  effect:'coverflow',
+  grabCursor:true,
+  pagination:{
+    el:'.swiper-pagination',
+    clickable:true,
+  },
+})
