@@ -36,36 +36,28 @@ function autorized() {
   function logOut() {
     login = null;
     localStorage.removeItem('Delivery')
-
-
     buttonAuth.style.display = '';
     userName.style.display = '';
     buttonOut.style.display = '';
-
     buttonOut.removeEventListener('click', logOut)
     checkAuth()
   }
-  console.log("Authorized !");
 
   userName.textContent = login
 
-  buttonAuth.style.display = 'none'
-  userName.style.display = 'inline'
-  buttonOut.style.display = 'block'
+  buttonAuth.style.display = 'none';
+  userName.style.display = 'inline';
+  buttonOut.style.display = 'block';
 
 
   buttonOut.addEventListener('click', logOut)
 }
 function notAutorized() {
-  console.log(" Not Authorized!");
-
   function logIn(event) {
     event.preventDefault();
     if (loginInput.value.trim()) {
-      login = loginInput.value
-
-      localStorage.setItem('Delivery', logIn)
-
+      login = loginInput.value;
+      localStorage.setItem('Delivery', login)
       toggleModalAuth();
       buttonAuth.removeEventListener('click', toggleModalAuth);
       closeAuth.removeEventListener('click', toggleModalAuth);
@@ -149,23 +141,31 @@ function createCardGood() {
 						<!-- /.card-text -->
   `);
 
-  cardsMenu.insertAdjacentElement('beforeend' , card)
+  cardsMenu.insertAdjacentElement('beforeend', card)
 
 }
 function openGoods(event) {
   const target = event.target;
 
-  const restaurant = target.closest('card-restaurant');
+  if (login) {
+    const restaurant = target.closest('card-restaurant');
+    if (restaurant) {
+      cardsMenu.textContent = '';
+      containerPromo.classList.add('hide');
+      restaurants.classList.add('hide');
+      menu.classList.remove('hide');
 
-  if (restaurants) {
-    containerPromo.classList.add('hide');
-    restaurants.classList.add('hide');
-    menu.classList.remove('hide');
 
-    cardsMenu.innerHTML = '';
-
-  createCardGood();
+      createCardGood();
+      createCardGood();
+      createCardGood();
+    }
+    else {
+      toggleModalAuth()
+    }
   }
+
+
 
 
 }
